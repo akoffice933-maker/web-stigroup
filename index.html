@@ -297,40 +297,40 @@
     <main>
         <!-- Блок 1: Hero -->
         <section class="min-h-screen flex items-center pt-20" id="hero">
-            <div class="container mx-auto px-4 py-12 md:py-20">
-                <div class="grid md:grid-cols-2 gap-12 items-center">
+            <div class="container mx-auto px-4 py-8 md:py-20">
+                <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
                     <div>
-                        <h1 class="mb-6">Производим и монтируем интерактивное оборудование под ключ в Сочи</h1>
-                        <p class="text-xl text-muted mb-8">Сенсорные панели, киоски, плёнки и рамки от производителя. Монтаж за 3 дня.</p>
-                        <div class="flex flex-wrap gap-4 mb-12">
-                            <a href="#catalog" class="btn-primary">Каталог продукции</a>
-                            <button class="btn-secondary" onclick="openModal('modal-calculator')">Рассчитать стоимость</button>
+                        <h1 class="mb-4 md:mb-6 text-3xl sm:text-4xl md:text-5xl lg:text-6xl">Производим и монтируем интерактивное оборудование под ключ в Сочи</h1>
+                        <p class="text-lg md:text-xl text-muted mb-6 md:mb-8">Сенсорные панели, киоски, плёнки и рамки от производителя. Монтаж за 3 дня.</p>
+                        <div class="flex flex-wrap gap-3 md:gap-4 mb-8 md:mb-12">
+                            <a href="#catalog" class="btn-primary px-4 py-3 md:px-6 md:py-3 text-sm md:text-base">Каталог продукции</a>
+                            <button class="btn-secondary px-4 py-3 md:px-6 md:py-3 text-sm md:text-base" onclick="openModal('modal-calculator')">Рассчитать стоимость</button>
                         </div>
-                        
+
                         <!-- Статистика -->
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            <div class="card p-4 text-center">
-                                <div class="text-3xl md:text-4xl font-heading font-bold text-primary mb-1">&gt;150</div>
-                                <div class="text-sm text-muted">внедрений в Краснодарском крае</div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+                            <div class="card p-3 md:p-4 text-center">
+                                <div class="text-2xl md:text-4xl font-heading font-bold text-primary mb-1">&gt;150</div>
+                                <div class="text-xs md:text-sm text-muted">внедрений в Краснодарском крае</div>
                             </div>
-                            <div class="card p-4 text-center">
-                                <div class="text-3xl md:text-4xl font-heading font-bold text-primary mb-1">10%</div>
-                                <div class="text-sm text-muted">скидка на первый заказ</div>
+                            <div class="card p-3 md:p-4 text-center">
+                                <div class="text-2xl md:text-4xl font-heading font-bold text-primary mb-1">10%</div>
+                                <div class="text-xs md:text-sm text-muted">скидка на первый заказ</div>
                             </div>
-                            <div class="card p-4 text-center">
-                                <div class="text-3xl md:text-4xl font-heading font-bold text-primary mb-1">&gt;7 лет</div>
-                                <div class="text-sm text-muted">средний срок службы</div>
+                            <div class="card p-3 md:p-4 text-center">
+                                <div class="text-2xl md:text-4xl font-heading font-bold text-primary mb-1">&gt;7 лет</div>
+                                <div class="text-xs md:text-sm text-muted">средний срок службы</div>
                             </div>
-                            <div class="card p-4 text-center">
-                                <div class="text-3xl md:text-4xl font-heading font-bold text-primary mb-1">36</div>
-                                <div class="text-sm text-muted">месяцев гарантия</div>
+                            <div class="card p-3 md:p-4 text-center">
+                                <div class="text-2xl md:text-4xl font-heading font-bold text-primary mb-1">36</div>
+                                <div class="text-xs md:text-sm text-muted">месяцев гарантия</div>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="relative">
-                        <img src="https://images.unsplash.com/photo-1593640408182-31c70c8268f5?w=800&h=600&fit=crop" 
-                             alt="Интерактивная панель в современном офисе" 
+                        <img src="https://images.unsplash.com/photo-1593640408182-31c70c8268f5?w=800&h=600&fit=crop"
+                             alt="Интерактивная панель в современном офисе"
                              class="w-full h-auto rounded-2xl shadow-2xl"
                              width="800"
                              height="600"
@@ -341,11 +341,11 @@
         </section>
 
         <!-- Блок 2: Каталог -->
-        <section class="py-20 bg-bgLight" id="catalog">
+        <section class="py-12 md:py-20 bg-bgLight" id="catalog">
             <div class="container mx-auto px-4">
-                <h2 class="text-center mb-12">Наша продукция</h2>
-                
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <h2 class="text-2xl md:text-4xl text-center mb-8 md:mb-12">Наша продукция</h2>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                     <!-- Товар 1 -->
                     <article class="card overflow-hidden">
                         <img src="https://images.unsplash.com/photo-1593640408182-31c70c8268f5?w=400&h=300&fit=crop" 
@@ -911,7 +911,7 @@
     </footer>
 
     <!-- Фиксированная CTA кнопка -->
-    <button class="fixed-cta fixed bottom-8 right-8 w-16 h-16 md:w-16 md:h-16 bg-primary rounded-full shadow-lg flex items-center justify-center z-30 hover:bg-primaryHover transition" onclick="openModal('modal-calculator')" aria-label="Рассчитать стоимость">
+    <button class="fixed-cta fixed bottom-8 right-8 w-16 h-16 md:w-16 md:h-16 bg-primary rounded-full shadow-lg flex items-center justify-center z-30 hover:bg-primaryHover transition-all duration-300 opacity-0 invisible md:bottom-8 md:right-8 md:w-16 md:h-16" onclick="openModal('modal-calculator')" aria-label="Рассчитать стоимость">
         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
         </svg>
@@ -1027,6 +1027,20 @@
                     <button type="submit" class="btn-primary w-full">Жду звонка</button>
                 </form>
             </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно: Успех -->
+    <div id="modal-success" class="modal fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+        <div class="modal-content bg-white rounded-2xl max-w-md w-full p-8 text-center">
+            <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg class="w-12 h-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+            </div>
+            <h3 class="text-2xl font-heading font-bold mb-4">Заявка отправлена!</h3>
+            <p class="text-muted mb-6">Спасибо! Мы свяжемся с вами в течение 15 минут</p>
+            <button class="btn-primary w-full" onclick="closeModal('modal-success')">Закрыть</button>
         </div>
     </div>
 
@@ -1164,14 +1178,39 @@
 
         // Калькулятор
         let currentStep = 1;
-        const basePrices = { panel: 120000, kiosk: 180000, film: 45000, frame: 35000 };
+        
+        // Расширенная таблица цен
+        const priceData = {
+            panel: {
+                base: 120000,
+                sizes: { '65': 120000, '75': 165000, '86': 210000, '98': 380000 }
+            },
+            kiosk: {
+                base: 180000,
+                sizes: { '32': 180000, '43': 220000, '55': 280000 }
+            },
+            film: {
+                base: 45000,
+                sizes: { '55': 45000, '65': 55000, '75': 70000, '86': 90000 }
+            },
+            frame: {
+                base: 35000,
+                sizes: { '55': 35000, '65': 42000, '75': 52000, '86': 65000 }
+            }
+        };
+        
         const installationCost = 15000;
+        const accessories = {
+            mount: 8000,      // крепление
+            software: 25000,  // расширенное ПО
+            delivery: 5000    // доставка
+        };
 
         function nextStep(step) {
             const form = document.getElementById('calculator-form');
             const currentStepEl = form.querySelector(`[data-step="${currentStep}"]`);
             const nextStepEl = form.querySelector(`[data-step="${step}"]`);
-            
+
             // Валидация текущего шага
             const requiredInputs = currentStepEl.querySelectorAll('[required]');
             let isValid = true;
@@ -1183,16 +1222,16 @@
                     isValid = false;
                 }
             });
-            
+
             if (!isValid) {
                 alert('Пожалуйста, заполните все обязательные поля');
                 return;
             }
-            
+
             currentStepEl.classList.remove('active');
             nextStepEl.classList.add('active');
             currentStep = step;
-            
+
             // Расчёт на шаге 4
             if (step === 4) {
                 calculateResult();
@@ -1203,7 +1242,7 @@
             const form = document.getElementById('calculator-form');
             const currentStepEl = form.querySelector(`[data-step="${currentStep}"]`);
             const prevStepEl = form.querySelector(`[data-step="${step}"]`);
-            
+
             currentStepEl.classList.remove('active');
             prevStepEl.classList.add('active');
             currentStep = step;
@@ -1218,23 +1257,69 @@
             const form = document.getElementById('calculator-form');
             const equipment = form.querySelector('input[name="equipment"]:checked')?.value || 'panel';
             const installation = form.querySelector('input[name="installation"]:checked')?.value || 'no';
+            const task = form.querySelector('select[name="task"]')?.value || 'other';
             
-            let total = basePrices[equipment] || 45000;
+            // Базовая цена оборудования
+            let total = priceData[equipment]?.base || 45000;
+            
+            // Добавляем стоимость монтажа
             if (installation === 'yes') {
                 total += installationCost;
             }
             
-            document.getElementById('calculator-result').textContent = `от ${total.toLocaleString('ru-RU')} ₽`;
+            // Скидка 10% на первый заказ (учитываем в расчёте)
+            const discount = total * 0.1;
+            total -= discount;
+            
+            // Итоговая сумма
+            document.getElementById('calculator-result').textContent = `от ${Math.floor(total).toLocaleString('ru-RU')} ₽`;
         }
 
         function handleCalculatorSubmit(event) {
             event.preventDefault();
             
-            // Здесь должна быть отправка на сервер
-            // document.getElementById('calculator-form').classList.add('hidden');
-            // document.getElementById('calculator-success').classList.remove('hidden');
+            const form = event.target;
+            const formData = new FormData(form);
             
-            alert('Форма отправлена! (демо-режим)');
+            // Показываем успех
+            form.classList.add('hidden');
+            document.getElementById('calculator-success').classList.remove('hidden');
+        }
+        
+        // Обработка отправки форм
+        function handleFormSubmit(event, modalId) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            
+            // Имитация отправки
+            submitBtn.textContent = 'Отправка...';
+            submitBtn.disabled = true;
+            
+            setTimeout(() => {
+                // Показываем модалку успеха
+                closeModal(modalId);
+                openModal('modal-success');
+                
+                // Возвращаем кнопку
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+                form.reset();
+            }, 1000);
+        }
+
+        function handleCallbackSubmit(event) {
+            handleFormSubmit(event, 'modal-callback');
+        }
+
+        function handleProductSubmit(event) {
+            handleFormSubmit(event, 'modal-product');
+        }
+
+        function handleSolutionSubmit(event) {
+            handleFormSubmit(event, 'modal-solution');
         }
 
         // FAQ аккордеон
@@ -1288,6 +1373,148 @@
             alert('Спасибо! Мы свяжемся для уточнения деталей');
             closeModal('modal-solution');
         }
+    </script>
+    
+    <!-- Яндекс.Метрика -->
+    <script type="text/javascript">
+        // Замените XXXXXXXX на ваш номер счётчика Яндекс.Метрики
+        (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+        (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+        ym(XXXXXXXX, "init", {
+            clickmap:true,
+            trackLinks:true,
+            accurateTrackBounce:true,
+            webvisor:true
+        });
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/XXXXXXXX" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Яндекс.Метрика -->
+    
+    <!-- Микроразметка Product для каталога -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "Product",
+                "name": "Интерактивная панель 65\"",
+                "description": "Идеально для небольших переговорных и учебных классов",
+                "brand": {
+                    "@type": "Brand",
+                    "name": "STI Group"
+                },
+                "offers": {
+                    "@type": "Offer",
+                    "price": "120000",
+                    "priceCurrency": "RUB",
+                    "availability": "https://schema.org/InStock",
+                    "seller": {
+                        "@type": "Organization",
+                        "name": "STI Group"
+                    }
+                }
+            },
+            {
+                "@type": "Product",
+                "name": "Интерактивная панель 86\"",
+                "description": "Для больших аудиторий и конференц-залов",
+                "brand": {
+                    "@type": "Brand",
+                    "name": "STI Group"
+                },
+                "offers": {
+                    "@type": "Offer",
+                    "price": "210000",
+                    "priceCurrency": "RUB",
+                    "availability": "https://schema.org/InStock",
+                    "seller": {
+                        "@type": "Organization",
+                        "name": "STI Group"
+                    }
+                }
+            },
+            {
+                "@type": "Product",
+                "name": "Сенсорная плёнка PCAP",
+                "description": "Превратит любую поверхность в сенсорную",
+                "brand": {
+                    "@type": "Brand",
+                    "name": "STI Group"
+                },
+                "offers": {
+                    "@type": "Offer",
+                    "price": "45000",
+                    "priceCurrency": "RUB",
+                    "availability": "https://schema.org/InStock",
+                    "seller": {
+                        "@type": "Organization",
+                        "name": "STI Group"
+                    }
+                }
+            },
+            {
+                "@type": "Product",
+                "name": "Сенсорная рамка IR",
+                "description": "Инфракрасная технология для любых дисплеев",
+                "brand": {
+                    "@type": "Brand",
+                    "name": "STI Group"
+                },
+                "offers": {
+                    "@type": "Offer",
+                    "price": "35000",
+                    "priceCurrency": "RUB",
+                    "availability": "https://schema.org/InStock",
+                    "seller": {
+                        "@type": "Organization",
+                        "name": "STI Group"
+                    }
+                }
+            },
+            {
+                "@type": "Product",
+                "name": "Сенсорный киоск 32-55\"",
+                "description": "Для навигации и самообслуживания",
+                "brand": {
+                    "@type": "Brand",
+                    "name": "STI Group"
+                },
+                "offers": {
+                    "@type": "Offer",
+                    "price": "180000",
+                    "priceCurrency": "RUB",
+                    "availability": "https://schema.org/InStock",
+                    "seller": {
+                        "@type": "Organization",
+                        "name": "STI Group"
+                    }
+                }
+            },
+            {
+                "@type": "Product",
+                "name": "Настенная стойка / кронштейн",
+                "description": "Надёжное крепление для панелей",
+                "brand": {
+                    "@type": "Brand",
+                    "name": "STI Group"
+                },
+                "offers": {
+                    "@type": "Offer",
+                    "price": "8000",
+                    "priceCurrency": "RUB",
+                    "availability": "https://schema.org/InStock",
+                    "seller": {
+                        "@type": "Organization",
+                        "name": "STI Group"
+                    }
+                }
+            }
+        ]
+    }
     </script>
 </body>
 </html>
