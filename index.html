@@ -204,12 +204,16 @@
         .fixed-cta {
             opacity: 0;
             visibility: hidden;
-            transition: all 0.3s ease;
+            transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
         }
-        
+
         .fixed-cta.visible {
             opacity: 1;
             visibility: visible;
+        }
+        
+        .fixed-cta:hover {
+            transform: scale(1.05);
         }
         
         /* Аккордеон FAQ */
@@ -297,40 +301,40 @@
     <main>
         <!-- Блок 1: Hero -->
         <section class="min-h-screen flex items-center pt-20" id="hero">
-            <div class="container mx-auto px-4 py-8 md:py-20">
-                <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+            <div class="container mx-auto px-4 py-6 sm:py-8 md:py-20">
+                <div class="grid md:grid-cols-2 gap-6 sm:gap-8 md:gap-12 items-center">
                     <div>
-                        <h1 class="mb-4 md:mb-6 text-3xl sm:text-4xl md:text-5xl lg:text-6xl">Производим и монтируем интерактивное оборудование под ключ в Сочи</h1>
-                        <p class="text-lg md:text-xl text-muted mb-6 md:mb-8">Сенсорные панели, киоски, плёнки и рамки от производителя. Монтаж за 3 дня.</p>
-                        <div class="flex flex-wrap gap-3 md:gap-4 mb-8 md:mb-12">
-                            <a href="#catalog" class="btn-primary px-4 py-3 md:px-6 md:py-3 text-sm md:text-base">Каталог продукции</a>
-                            <button class="btn-secondary px-4 py-3 md:px-6 md:py-3 text-sm md:text-base" onclick="openModal('modal-calculator')">Рассчитать стоимость</button>
+                        <h1 class="mb-3 sm:mb-4 md:mb-6 text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold leading-tight">Производим и монтируем интерактивное оборудование под ключ в Сочи</h1>
+                        <p class="text-base sm:text-lg md:text-xl text-muted mb-4 sm:mb-6 md:mb-8">Сенсорные панели, киоски, плёнки и рамки от производителя. Монтаж за 3 дня.</p>
+                        <div class="flex flex-wrap gap-2 sm:gap-3 md:gap-4 mb-6 sm:mb-8 md:mb-12">
+                            <a href="#catalog" class="btn-primary px-3 sm:px-4 md:px-6 py-2 sm:py-3 md:py-3 text-xs sm:text-sm md:text-base">Каталог продукции</a>
+                            <button class="btn-secondary px-3 sm:px-4 md:px-6 py-2 sm:py-3 md:py-3 text-xs sm:text-sm md:text-base" onclick="openModal('modal-calculator')">Рассчитать стоимость</button>
                         </div>
 
                         <!-- Статистика -->
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-                            <div class="card p-3 md:p-4 text-center">
-                                <div class="text-2xl md:text-4xl font-heading font-bold text-primary mb-1">&gt;150</div>
-                                <div class="text-xs md:text-sm text-muted">внедрений в Краснодарском крае</div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
+                            <div class="card p-2 sm:p-3 md:p-4 text-center">
+                                <div class="text-xl sm:text-2xl md:text-4xl font-heading font-bold text-primary mb-1">&gt;150</div>
+                                <div class="text-xs sm:text-sm text-muted">внедрений в Краснодарском крае</div>
                             </div>
-                            <div class="card p-3 md:p-4 text-center">
-                                <div class="text-2xl md:text-4xl font-heading font-bold text-primary mb-1">10%</div>
-                                <div class="text-xs md:text-sm text-muted">скидка на первый заказ</div>
+                            <div class="card p-2 sm:p-3 md:p-4 text-center">
+                                <div class="text-xl sm:text-2xl md:text-4xl font-heading font-bold text-primary mb-1">10%</div>
+                                <div class="text-xs sm:text-sm text-muted">скидка на первый заказ</div>
                             </div>
-                            <div class="card p-3 md:p-4 text-center">
-                                <div class="text-2xl md:text-4xl font-heading font-bold text-primary mb-1">&gt;7 лет</div>
-                                <div class="text-xs md:text-sm text-muted">средний срок службы</div>
+                            <div class="card p-2 sm:p-3 md:p-4 text-center">
+                                <div class="text-xl sm:text-2xl md:text-4xl font-heading font-bold text-primary mb-1">&gt;7 лет</div>
+                                <div class="text-xs sm:text-sm text-muted">средний срок службы</div>
                             </div>
-                            <div class="card p-3 md:p-4 text-center">
-                                <div class="text-2xl md:text-4xl font-heading font-bold text-primary mb-1">36</div>
-                                <div class="text-xs md:text-sm text-muted">месяцев гарантия</div>
+                            <div class="card p-2 sm:p-3 md:p-4 text-center">
+                                <div class="text-xl sm:text-2xl md:text-4xl font-heading font-bold text-primary mb-1">36</div>
+                                <div class="text-xs sm:text-sm text-muted">месяцев гарантия</div>
                             </div>
                         </div>
                     </div>
 
                     <div class="relative">
-                        <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800&h=600&fit=crop" 
-                             alt="Интерактивная доска в современной аудитории" 
+                        <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800&h=600&fit=crop"
+                             alt="Интерактивная доска в современной аудитории"
                              class="w-full h-auto rounded-2xl shadow-2xl"
                              width="800"
                              height="600"
@@ -341,7 +345,7 @@
         </section>
 
         <!-- Блок 2: Каталог -->
-        <section class="py-12 md:py-20 bg-bgLight" id="catalog">
+        <section class="py-10 sm:py-12 md:py-20 bg-bgLight" id="catalog">
             <div class="container mx-auto px-4">
                 <h2 class="text-2xl md:text-4xl text-center mb-8 md:mb-12">Наша продукция</h2>
 
@@ -458,10 +462,10 @@
         </section>
 
         <!-- Блок 3: Калькулятор -->
-        <section class="py-20" id="calculator">
+        <section class="py-10 sm:py-12 md:py-20" id="calculator">
             <div class="container mx-auto px-4">
-                <h2 class="text-center mb-4">Рассчитайте стоимость интерактивного оборудования под ключ</h2>
-                <p class="text-center text-muted mb-12">Ответьте на 4 вопроса и получите ориентировочную стоимость</p>
+                <h2 class="text-2xl md:text-4xl text-center mb-4 md:mb-8">Рассчитайте стоимость интерактивного оборудования под ключ</h2>
+                <p class="text-center text-muted mb-6 md:mb-12">Ответьте на 4 вопроса и получите ориентировочную стоимость</p>
                 
                 <div class="card max-w-3xl mx-auto p-8">
                     <form id="calculator-form" onsubmit="handleCalculatorSubmit(event)">
@@ -687,12 +691,12 @@
         </section>
 
         <!-- Блок 5: Преимущества -->
-        <section class="py-20" id="advantages">
+        <section class="py-10 sm:py-12 md:py-20" id="advantages">
             <div class="container mx-auto px-4">
-                <h2 class="text-center mb-12">Почему выбирают STI Group</h2>
-                
+                <h2 class="text-2xl md:text-4xl text-center mb-6 md:mb-12">Почему выбирают STI Group</h2>
+
                 <div class="grid md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    <div class="card p-6 text-center">
+                    <div class="card p-4 sm:p-6 text-center">
                         <div class="text-4xl mb-4">💰</div>
                         <h3 class="text-lg mb-2">Цены на 20–40% ниже</h3>
                         <p class="text-sm text-muted">Работаем без посредников</p>
@@ -756,11 +760,11 @@
         </section>
 
         <!-- Блок 6: Кейсы -->
-        <section class="py-20 bg-bgLight" id="cases">
+        <section class="py-10 sm:py-12 md:py-20 bg-bgLight" id="cases">
             <div class="container mx-auto px-4">
-                <h2 class="text-center mb-12">Наши внедрения</h2>
-                
-                <div class="grid md:grid-cols-3 gap-8">
+                <h2 class="text-2xl md:text-4xl text-center mb-6 md:mb-12">Наши внедрения</h2>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                     <!-- Кейс 1 -->
                     <article class="card overflow-hidden">
                         <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=400&h=300&fit=crop" 
@@ -807,9 +811,9 @@
         </section>
 
         <!-- Блок 7: FAQ -->
-        <section class="py-20" id="faq">
+        <section class="py-10 sm:py-12 md:py-20" id="faq">
             <div class="container mx-auto px-4">
-                <h2 class="text-center mb-12">Часто задаваемые вопросы</h2>
+                <h2 class="text-2xl md:text-4xl text-center mb-6 md:mb-12">Часто задаваемые вопросы</h2>
                 
                 <div class="max-w-3xl mx-auto space-y-4">
                     <!-- Вопрос 1 -->
@@ -1024,7 +1028,7 @@
     <div id="modal-solution" class="modal fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
         <div class="modal-content bg-white rounded-2xl max-w-lg w-full">
             <div class="p-6 border-b flex justify-between items-center">
-                <h3 class="text-2xl" id="modal-solution-title">Заказать решение</h3>
+                <h3 class="text-2xl" id="modal-solution-title">Зак��зать решение</h3>
                 <button onclick="closeModal('modal-solution')" aria-label="Закрыть">
                     <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
