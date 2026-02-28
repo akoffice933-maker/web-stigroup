@@ -87,9 +87,9 @@
             color: #0f172a;
         }
         
-        h1 { font-size: clamp(2.8rem, 7vw, 5rem); }
-        h2 { font-size: clamp(2.2rem, 5vw, 3.8rem); }
-        h3 { font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 700; }
+        h1 { font-size: clamp(1.75rem, 5vw, 3.5rem); }
+        h2 { font-size: clamp(1.75rem, 4vw, 2.75rem); }
+        h3 { font-size: clamp(1.25rem, 2.5vw, 1.75rem); font-weight: 700; }
         
         button, .btn {
             font-family: var(--font-heading);
@@ -304,8 +304,8 @@
             <div class="container mx-auto px-4 py-6 sm:py-8 md:py-20">
                 <div class="grid md:grid-cols-2 gap-6 sm:gap-8 md:gap-12 items-center">
                     <div>
-                        <h1 class="mb-3 sm:mb-4 md:mb-6 text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold leading-tight">Производим и монтируем интерактивное оборудование под ключ в Сочи</h1>
-                        <p class="text-base sm:text-lg md:text-xl text-muted mb-4 sm:mb-6 md:mb-8">Сенсорные панели, киоски, плёнки и рамки от производителя. Монтаж за 3 дня.</p>
+                        <h1 class="mb-3 sm:mb-4 md:mb-6 text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-extrabold leading-tight">Производим и монтируем интерактивное оборудование под ключ в Сочи</h1>
+                        <p class="text-sm sm:text-base md:text-lg text-muted mb-4 sm:mb-6 md:mb-8">Сенсорные панели, киоски, плёнки и рамки от производителя. Монтаж за 3 дня.</p>
                         <div class="flex flex-wrap gap-2 sm:gap-3 md:gap-4 mb-6 sm:mb-8 md:mb-12">
                             <a href="#catalog" class="btn-primary px-3 sm:px-4 md:px-6 py-2 sm:py-3 md:py-3 text-xs sm:text-sm md:text-base">Каталог продукции</a>
                             <button class="btn-secondary px-3 sm:px-4 md:px-6 py-2 sm:py-3 md:py-3 text-xs sm:text-sm md:text-base" onclick="openModal('modal-calculator')">Рассчитать стоимость</button>
@@ -961,8 +961,8 @@
     </footer>
 
     <!-- Фиксированная CTA кнопка -->
-    <button class="fixed-cta fixed bottom-8 right-8 w-16 h-16 md:w-16 md:h-16 bg-primary rounded-full shadow-lg flex items-center justify-center z-30 hover:bg-primaryHover transition-all duration-300 opacity-0 invisible md:bottom-8 md:right-8 md:w-16 md:h-16" onclick="openModal('modal-calculator')" aria-label="Рассчитать стоимость">
-        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <button class="fixed-cta fixed bottom-6 right-6 md:bottom-8 md:right-8 w-14 h-14 md:w-16 md:h-16 bg-primary rounded-full shadow-lg flex items-center justify-center z-30 hover:bg-primaryHover hover:scale-105 transition-all duration-300 opacity-0 invisible" onclick="openModal('modal-calculator')" aria-label="Рассчитать стоимость">
+        <svg class="w-7 h-7 md:w-8 md:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
         </svg>
     </button>
