@@ -1,265 +1,378 @@
 ================================================================================
                     ИНСТРУКЦИЯ ПО НАСТРОЙКЕ САЙТА STI GROUP
 ================================================================================
+Версия: Февраль 2026
+Сайт: https://akoffice933-maker.github.io/web-stigroup/
 
-1. ПОДКЛЮЧЕНИЕ ФОРМ К SUBMIT.PHP
---------------------------------------------------------------------------------
+================================================================================
+1. БЫСТРЫЙ СТАРТ (что нужно сделать в первую очередь)
+================================================================================
 
-Все формы на сайте сейчас работают в демо-режиме. Для реальной отправки:
+1.1. ЗАМЕНИТЕ НОМЕР СЧЁТЧИКА ЯНДЕКС.МЕТРИКИ
 
-1.1. Создайте файл submit.php в корне сайта со следующим содержимым:
+Откройте index.html, найдите все вхождения "XXXXXXXX" (6 мест) и замените на 
+ваш номер счётчика Яндекс.Метрики.
 
-<?php
-// submit.php - Обработчик форм
+Где найти номер:
+- Зайдите на https://metrika.yandex.ru/
+- Создайте новый счётчик или выберите существующий
+- Номер указан в коде счётчика (например, ym(12345678, "init", ...))
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Получаем данные
-    $name = htmlspecialchars(trim($_POST['name'] ?? ''));
-    $phone = htmlspecialchars(trim($_POST['phone'] ?? ''));
-    $email = htmlspecialchars(trim($_POST['email'] ?? ''));
-    $comment = htmlspecialchars(trim($_POST['comment'] ?? ''));
-    $form_type = htmlspecialchars(trim($_POST['form_type'] ?? 'callback'));
-    
-    // Простая валидация
-    if (empty($name) || empty($phone)) {
-        http_response_code(400);
-        echo json_encode(['success' => false, 'message' => 'Заполните обязательные поля']);
-        exit;
-    }
-    
-    // Настройки почты
-    $to = 'info@stigroup.ru'; // Ваш email для заявок
-    $subject = "Заявка с сайта STI Group: $form_type";
-    
-    $message = "
-    <html>
-    <head><title>Новая заявка</title></head>
-    <body>
-        <h2>Данные заявки</h2>
-        <p><strong>Тип формы:</strong> $form_type</p>
-        <p><strong>Имя:</strong> $name</p>
-        <p><strong>Телефон:</strong> $phone</p>
-        <p><strong>Email:</strong> $email</p>
-        <p><strong>Комментарий:</strong> $comment</p>
-        <p><strong>Дата:</strong> " . date('d.m.Y H:i') . "</p>
-    </body>
-    </html>
-    ";
-    
-    $headers = "MIME-Version: 1.0" . "\r\n";
-    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-    $headers .= "From: STI Group <noreply@stigroup.ru>" . "\r\n";
-    
-    // Отправка письма
-    if (mail($to, $subject, $message, $headers)) {
-        echo json_encode(['success' => true]);
-    } else {
-        http_response_code(500);
-        echo json_encode(['success' => false, 'message' => 'Ошибка отправки']);
-    }
-} else {
-    http_response_code(403);
-    echo json_encode(['success' => false, 'message' => 'Forbidden']);
-}
-?>
-
-1.2. Измените обработчики форм в index.html:
-
-Найдите строку (примерно 1370):
-    function handleCalculatorSubmit(event) {
-        event.preventDefault();
-        const form = event.target;
-        form.classList.add('hidden');
-        document.getElementById('calculator-success').classList.remove('hidden');
-    }
-
-Замените на:
-    async function handleCalculatorSubmit(event) {
-        event.preventDefault();
-        const form = event.target;
-        const formData = new FormData(form);
-        formData.append('form_type', 'calculator');
-        
-        try {
-            const response = await fetch('/submit.php', {
-                method: 'POST',
-                body: formData
-            });
-            const result = await response.json();
-            
-            if (result.success) {
-                form.classList.add('hidden');
-                document.getElementById('calculator-success').classList.remove('hidden');
-                // Отправка цели в Яндекс.Метрику
-                if (typeof ym !== 'undefined') {
-                    ym(XXXXXXXX, 'reachGoal', 'calculator_submit');
-                }
-            } else {
-                alert('Ошибка: ' + result.message);
-            }
-        } catch (error) {
-            alert('Ошибка отправки. Попробуйте позже.');
-        }
-    }
-
-1.3. Для остальных форм (callback, product, solution) замените handleFormSubmit:
-
-Найдите строку (примерно 1380):
-    function handleFormSubmit(event, modalId) {
-        event.preventDefault();
-        const form = event.target;
-        const submitBtn = form.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
-        submitBtn.textContent = 'Отправка...';
-        submitBtn.disabled = true;
-        setTimeout(() => {
-            closeModal(modalId);
-            openModal('modal-success');
-            submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
-            form.reset();
-        }, 1000);
-    }
-
-Замените на:
-    async function handleFormSubmit(event, modalId) {
-        event.preventDefault();
-        const form = event.target;
-        const submitBtn = form.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
-        
-        submitBtn.textContent = 'Отправка...';
-        submitBtn.disabled = true;
-        
-        const formData = new FormData(form);
-        formData.append('form_type', modalId.replace('modal-', ''));
-        
-        try {
-            const response = await fetch('/submit.php', {
-                method: 'POST',
-                body: formData
-            });
-            const result = await response.json();
-            
-            if (result.success) {
-                closeModal(modalId);
-                openModal('modal-success');
-                // Отправка цели в Яндекс.Метрику
-                if (typeof ym !== 'undefined') {
-                    ym(XXXXXXXX, 'reachGoal', 'form_submit');
-                }
-            } else {
-                alert('Ошибка: ' + result.message);
-            }
-        } catch (error) {
-            alert('Ошибка отправки. Попробуйте позже.');
-        } finally {
-            submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
-        }
-    }
-
-
-2. НАСТРОЙКА ЯНДЕКС.МЕТРИКИ
---------------------------------------------------------------------------------
-
-2.1. Зарегистрируйте счётчик в Яндекс.Метрике:
-    - Откройте https://metrika.yandex.ru/
-    - Нажмите "Добавить счётчик"
-    - Заполните данные сайта (имя: STI Group, URL: https://akoffice933-maker.github.io/web-stigroup/)
-    - Получите номер счётчика (например, 12345678)
-
-2.2. Вставьте номер счётчика в index.html:
-
-Найдите строку (примерно 1420):
-    ym(XXXXXXXX, "init", {
-
-Замените XXXXXXXX на ваш номер:
-    ym(12345678, "init", {
-
-2.3. Настройте цели в Яндекс.Метрике:
+1.2. НАСТРОЙТЕ ЦЕЛИ В ЯНДЕКС.МЕТРИКЕ
 
 В интерфейсе Метрики перейдите в: Настройки → Цели → Добавить цель
 
-Цель 1: Отправка формы калькулятора
-    - Тип условия: JavaScript-событие
-    - Идентификатор цели: calculator_submit
-    - Название: Отправка калькулятора
+Создайте 4 цели типа "JavaScript-событие":
 
-Цель 2: Отправка любой формы
-    - Тип условия: JavaScript-событие
-    - Идентификатор цели: form_submit
-    - Название: Заявка с формы
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ Цель 1: Отправка любой формы                                                │
+│ Идентификатор цели: form_submit                                             │
+│ Название: Заявка с формы                                                    │
+└─────────────────────────────────────────────────────────────────────────────┘
 
-Цель 3: Клик по фиксированной кнопке
-    - Тип условия: JavaScript-событие
-    - Идентификатор цели: fixed_cta_click
-    - Название: Клик по CTA кнопке
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ Цель 2: Клик по фиксированной кнопке                                        │
+│ Идентификатор цели: fixed_cta_click                                         │
+│ Название: Клик по CTA кнопке                                                │
+└─────────────────────────────────────────────────────────────────────────────┘
 
-Цель 4: Просмотр раздела FAQ
-    - Тип условия: Просмотр веб-страницы
-    - URL: содержит #faq
-    - Название: Просмотр FAQ
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ Цель 3: Просмотр раздела FAQ                                                │
+│ Идентификатор цели: faq_view                                                │
+│ Название: Просмотр FAQ                                                      │
+└─────────────────────────────────────────────────────────────────────────────┘
 
-2.4. Добавьте отслеживание клика по фиксированной кнопке:
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ Цель 4: Просмотр каталога                                                   │
+│ Идентификатор цели: catalog_view                                            │
+│ Название: Просмотр каталога                                                 │
+└─────────────────────────────────────────────────────────────────────────────┘
 
-В index.html найдите кнопку (примерно строка 920):
-    <button class="fixed-cta ... " onclick="openModal('modal-calculator')" ...>
+1.3. НАСТРОЙТЕ ОТПРАВКУ ФОРМ НА EMAIL
 
-Добавьте вызов метрики:
-    <button class="fixed-cta ... " onclick="if(typeof ym!=='undefined'){ym(12345678,'reachGoal','fixed_cta_click')}; openModal('modal-calculator')" ...>
+См. раздел 2 ниже (подключение submit.php).
 
 
-3. ДОПОЛНИТЕЛЬНЫЕ НАСТРОЙКИ
---------------------------------------------------------------------------------
+================================================================================
+2. ПОДКЛЮЧЕНИЕ ФОРМ К EMAIL (submit.php)
+================================================================================
 
-3.1. Измените контактные данные в index.html:
-    - Телефон: +7 (862) 123-45-67 → ваш реальный
-    - Email: info@stigroup.ru → ваш реальный
-    - Адрес шоу-рума (если есть)
+2.1. СОЗДАЙТЕ ФАЙЛ submit.php
 
-3.2. Политика конфиденциальности:
-    Создайте файл privacy.html с текстом политики и обновите ссылку в футере.
+Создайте файл submit.php в корне сайта со следующим содержимым:
 
-3.3. robots.txt:
-    Создайте файл robots.txt в корне:
+<?php
+// submit.php - Обработчик форм для STI Group
+// Разместите в корне сайта (рядом с index.html)
+
+header('Content-Type: application/json; charset=utf-8');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: POST');
+
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(403);
+    echo json_encode(['success' => false, 'message' => 'Forbidden']);
+    exit;
+}
+
+// Получаем и очищаем данные
+$name = htmlspecialchars(trim($_POST['name'] ?? ''));
+$phone = htmlspecialchars(trim($_POST['phone'] ?? ''));
+$email = htmlspecialchars(trim($_POST['email'] ?? ''));
+$comment = htmlspecialchars(trim($_POST['comment'] ?? ''));
+$form_type = htmlspecialchars(trim($_POST['form_type'] ?? 'callback'));
+
+// Данные из калькулятора
+$task = htmlspecialchars(trim($_POST['task'] ?? ''));
+$equipment = htmlspecialchars(trim($_POST['equipment'] ?? ''));
+$size = htmlspecialchars(trim($_POST['size'] ?? ''));
+$installation = htmlspecialchars(trim($_POST['installation'] ?? ''));
+$address = htmlspecialchars(trim($_POST['address'] ?? ''));
+
+// Простая валидация
+if (empty($name) || empty($phone)) {
+    http_response_code(400);
+    echo json_encode(['success' => false, 'message' => 'Заполните имя и телефон']);
+    exit;
+}
+
+// Проверка телефона (простая)
+if (!preg_match('/^[0-9\+\-\(\) ]{10,20}$/', $phone)) {
+    http_response_code(400);
+    echo json_encode(['success' => false, 'message' => 'Некорректный телефон']);
+    exit;
+}
+
+// НАСТРОЙКИ ПОЧТЫ
+$to = 'info@stigroup.ru'; // ← ЗАМЕНИТЕ на ваш email для заявок
+$subject = "🔥 Заявка с сайта STI Group: $form_type";
+
+// Формируем сообщение
+$message = "
+<html>
+<head>
+    <meta charset='utf-8'>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .header { background: #2563eb; color: white; padding: 20px; }
+        .content { padding: 20px; }
+        .label { font-weight: bold; color: #0f172a; }
+        .value { color: #1e293b; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <div class='header'>
+        <h1>Новая заявка с сайта</h1>
+    </div>
+    <div class='content'>
+        <p><span class='label'>Тип формы:</span> <span class='value'>$form_type</span></p>
+        <p><span class='label'>Имя:</span> <span class='value'>$name</span></p>
+        <p><span class='label'>Телефон:</span> <span class='value'>$phone</span></p>
+        <p><span class='label'>Email:</span> <span class='value'>" . ($email ?: 'не указан') . "</span></p>
+        <p><span class='label'>Комментарий:</span> <span class='value'>" . ($comment ?: 'нет') . "</span></p>
+        <hr>
+        <p><span class='label'>Дата:</span> <span class='value'>" . date('d.m.Y H:i') . "</span></p>
+        <p><span class='label'>IP:</span> <span class='value'>" . $_SERVER['REMOTE_ADDR'] . "</span></p>
+    </div>
+</body>
+</html>
+";
+
+$headers = "MIME-Version: 1.0\r\n";
+$headers .= "Content-type: text/html; charset=utf-8\r\n";
+$headers .= "From: STI Group <noreply@stigroup.ru>\r\n";
+$headers .= "Reply-To: $email\r\n";
+$headers .= "X-Mailer: PHP/" . phpversion();
+
+// Отправка письма
+if (mail($to, $subject, $message, $headers)) {
+    // Можно сохранить в файл для резерва
+    $log_entry = date('Y-m-d H:i:s') . " | $form_type | $name | $phone | $email\n";
+    file_put_contents('leads.log', $log_entry, FILE_APPEND);
     
-    User-agent: *
-    Allow: /
-    Sitemap: https://akoffice933-maker.github.io/web-stigroup/sitemap.xml
+    echo json_encode(['success' => true]);
+} else {
+    http_response_code(500);
+    echo json_encode(['success' => false, 'message' => 'Ошибка отправки письма']);
+}
+?>
 
-3.4. Favicon:
-    Добавьте иконку favicon.ico в корень и ссылку в <head>:
-    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+2.2. ЗАМЕНИТЕ EMAIL В submit.php
+
+Найдите строку:
+$to = 'info@stigroup.ru';
+
+Замените на ваш реальный email для получения заявок.
+
+2.3. АКТИВИРУЙТЕ ОТПРАВКУ ФОРМ В index.html
+
+Откройте index.html, найдите функцию handleFormSubmit (примерно строка 1385).
+
+ЗАМЕНИТЕ этот блок:
+
+```javascript
+// Имитация отправки для демо
+submitBtn.textContent = 'Отправка...';
+submitBtn.disabled = true;
+
+setTimeout(() => {
+    // Показываем модалку успеха
+    if (modalId) closeModal(modalId);
+    openModal('modal-success');
+    
+    submitBtn.textContent = originalText;
+    submitBtn.disabled = false;
+    form.reset();
+    
+    if (typeof ym !== 'undefined') {
+        ym(XXXXXXXX, 'reachGoal', 'form_submit');
+    }
+}, 1000);
+```
+
+НА этот:
+
+```javascript
+submitBtn.textContent = 'Отправка...';
+submitBtn.disabled = true;
+
+const formData = new FormData(form);
+formData.append('form_type', modalId.replace('modal-', ''));
+
+fetch('/submit.php', {
+    method: 'POST',
+    body: formData
+})
+.then(response => response.json())
+.then(result => {
+    if (result.success) {
+        if (modalId) closeModal(modalId);
+        openModal('modal-success');
+        form.reset();
+        
+        if (typeof ym !== 'undefined') {
+            ym(XXXXXXXX, 'reachGoal', 'form_submit');
+        }
+    } else {
+        alert('Ошибка: ' + result.message);
+    }
+})
+.catch(error => {
+    alert('Ошибка отправки. Попробуйте позже.');
+    console.error('Error:', error);
+})
+.finally(() => {
+    submitBtn.textContent = originalText;
+    submitBtn.disabled = false;
+});
+```
+
+2.4. ПРОВЕРЬТЕ РАБОТУ
+
+1. Откройте сайт
+2. Заполните любую форму
+3. Проверьте получение письма на email
+4. Проверьте logs (файл leads.log)
 
 
+================================================================================
+3. ДОПОЛНИТЕЛЬНЫЕ НАСТРОЙКИ
+================================================================================
+
+3.1. КОНТАКТНЫЕ ДАННЫЕ
+
+Замените в index.html (используйте поиск):
+
+Старый телефон: +7 (862) 123-45-67
+Новый телефон: [ваш реальный]
+
+Старый email: info@stigroup.ru
+Новый email: [ваш реальный]
+
+3.2. ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ
+
+Создайте файл privacy.html с текстом политики конфиденциальности.
+Обновите ссылку в футере (строка ~950).
+
+3.3. FAVICON
+
+Добавьте иконку favicon.ico (32×32px) в корень сайта.
+Добавьте в <head> (после мета-тегов):
+
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+3.4. ROBOTS.TXT
+
+Создайте файл robots.txt в корне:
+
+User-agent: *
+Allow: /
+Sitemap: https://akoffice933-maker.github.io/web-stigroup/sitemap.xml
+
+3.5. 404 СТРАНИЦА
+
+Создайте файл 404.html для обработки ошибок:
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Страница не найдена | STI Group</title>
+    <style>
+        body { font-family: 'Inter', sans-serif; text-align: center; padding: 100px 20px; }
+        h1 { font-size: 4rem; color: #2563eb; }
+        a { color: #2563eb; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <h1>404</h1>
+    <p>Страница не найдена</p>
+    <p><a href="/">← Вернуться на главную</a></p>
+</body>
+</html>
+
+
+================================================================================
 4. ПРОВЕРКА РАБОТОСПОСОБНОСТИ
---------------------------------------------------------------------------------
+================================================================================
 
-4.1. Проверьте отправку форм:
-    - Откройте сайт
-    - Заполните форму в калькуляторе
-    - Проверьте получение письма на email
+4.1. ФОРМЫ
 
-4.2. Проверьте Яндекс.Метрику:
-    - Откройте сайт
-    - Заполните форму
-    - В Метрике: Отчёты → Стандартные → Посещаемость
-    - Через 1-2 минуты должна появиться цель
+✓ Откройте сайт
+✓ Заполните форму в калькуляторе
+✓ Заполните форму "Заказать звонок"
+✓ Проверьте получение писем на email
+✓ Проверьте файл leads.log (если создали)
 
-4.3. Проверьте мобильную версию:
-    - Откройте сайт с телефона
-    - Проверьте читаемость текста
-    - Проверьте работу меню-бургера
+4.2. ЯНДЕКС.МЕТРИКА
+
+✓ Откройте сайт
+✓ Заполните любую форму
+✓ Кликните по фиксированной кнопке
+✓ Проскролльте до FAQ
+✓ Через 1-2 минуты проверьте отчёт в Метрике:
+  Отчёты → Стандартные → Посещаемость → Цели
+
+4.3. МОБИЛЬНАЯ ВЕРСИЯ
+
+✓ Откройте сайт с телефона
+✓ Проверьте читаемость текста
+✓ Проверьте работу меню-бургера
+✓ Проверьте форму калькулятора
+
+4.4. СКОРОСТЬ
+
+✓ Проверьте через https://pagespeed.web.dev/
+✓ Цель: 90+ для мобильных, 95+ для десктопа
 
 
 ================================================================================
-                         ТЕХПОДДЕРЖКА
+5. ТЕХПОДДЕРЖКА И ВОЗМОЖНЫЕ ПРОБЛЕМЫ
 ================================================================================
+
+ПРОБЛЕМА: Формы не отправляются
+РЕШЕНИЕ:
+1. Проверьте консоль браузера (F12) на ошибки
+2. Убедитесь, что submit.php загружен на сервер
+3. Проверьте права доступа к файлу (644)
+4. Проверьте логи сервера
+
+ПРОБЛЕМА: Метрика не показывает цели
+РЕШЕНИЕ:
+1. Убедитесь, что номер счётчика указан верно
+2. Проверьте, что цели созданы в интерфейсе Метрики
+3. Подождите 1-2 минуты после тестового события
+4. Проверьте консоль на ошибки JavaScript
+
+ПРОБЛЕМА: Письма не приходят
+РЕШЕНИЕ:
+1. Проверьте папку Спам
+2. Убедитесь, что email в $to указан верно
+3. Проверьте настройки сервера (функция mail())
+4. Рассмотрите использование SMTP или PHPMailer
+
+ПРОБЛЕМА: Сайт не открывается на GitHub Pages
+РЕШЕНИЕ:
+1. Проверьте настройки: Settings → Pages → Source: gh-pages branch
+2. Подождите 2-5 минут после пуша
+3. Очистите кэш браузера (Ctrl+Shift+R)
+4. Проверьте https://github.com/akoffice933-maker/web-stigroup/actions
+
+
+================================================================================
+                         КОНТАКТНАЯ ИНФОРМАЦИЯ
+================================================================================
+
+Сайт: https://akoffice933-maker.github.io/web-stigroup/
+Репозиторий: https://github.com/akoffice933-maker/web-stigroup
 
 При возникновении проблем:
-1. Проверьте консоль браузера (F12) на наличие ошибок
+1. Проверьте логи ошибок в консоли браузера
 2. Проверьте логи сервера для submit.php
-3. Убедитесь, что номер счётчика Метрики указан верно
+3. Убедитесь, что все XXXXXXXX заменены на номер Метрики
 
+================================================================================
+                    © 2026 STI Group. Все права защищены.
 ================================================================================

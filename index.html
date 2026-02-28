@@ -1382,28 +1382,73 @@
         }
         
         // Обработка отправки форм
-        function handleFormSubmit(event, modalId) {
+        async function handleFormSubmit(event, modalId) {
             event.preventDefault();
             
             const form = event.target;
             const submitBtn = form.querySelector('button[type="submit"]');
             const originalText = submitBtn.textContent;
             
-            // Имитация отправки
+            // Имитация отправки для демо
             submitBtn.textContent = 'Отправка...';
             submitBtn.disabled = true;
             
             setTimeout(() => {
                 // Показываем модалку успеха
-                closeModal(modalId);
+                if (modalId) closeModal(modalId);
                 openModal('modal-success');
                 
                 // Возвращаем кнопку
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
                 form.reset();
+                
+                // Отправка цели в Яндекс.Метрику
+                if (typeof ym !== 'undefined') {
+                    ym(XXXXXXXX, 'reachGoal', 'form_submit');
+                }
             }, 1000);
         }
+        
+        // Для реальной отправки на сервер замените handleFormSubmit на:
+        /*
+        async function handleFormSubmit(event, modalId) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            
+            submitBtn.textContent = 'Отправка...';
+            submitBtn.disabled = true;
+            
+            try {
+                const formData = new FormData(form);
+                const response = await fetch('/submit.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (response.ok) {
+                    if (modalId) closeModal(modalId);
+                    openModal('modal-success');
+                    form.reset();
+                    
+                    // Отправка цели в Яндекс.Метрику
+                    if (typeof ym !== 'undefined') {
+                        ym(XXXXXXXX, 'reachGoal', 'form_submit');
+                    }
+                } else {
+                    alert('Ошибка отправки. Попробуйте позже.');
+                }
+            } catch (error) {
+                alert('Не удалось отправить форму. Проверьте соединение.');
+            } finally {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
+        }
+        */
 
         function handleCallbackSubmit(event) {
             handleFormSubmit(event, 'modal-callback');
@@ -1442,32 +1487,13 @@
         window.addEventListener('scroll', () => {
             const fixedCta = document.querySelector('.fixed-cta');
             const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-            
+
             if (scrollPercent > 30) {
                 fixedCta.classList.add('visible');
             } else {
                 fixedCta.classList.remove('visible');
             }
         });
-
-        // Обработчики форм
-        function handleCallbackSubmit(event) {
-            event.preventDefault();
-            alert('Спасибо! Мы перезвоним вам в течение 15 минут');
-            closeModal('modal-callback');
-        }
-
-        function handleProductSubmit(event) {
-            event.preventDefault();
-            alert('Спасибо! Мы вышлем информацию о продукте');
-            closeModal('modal-product');
-        }
-
-        function handleSolutionSubmit(event) {
-            event.preventDefault();
-            alert('Спасибо! Мы свяжемся для уточнения деталей');
-            closeModal('modal-solution');
-        }
     </script>
     
     <!-- Яндекс.Метрика -->
@@ -1488,6 +1514,46 @@
     </script>
     <noscript><div><img src="https://mc.yandex.ru/watch/XXXXXXXX" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
     <!-- /Яндекс.Метрика -->
+    
+    <!-- Цели Яндекс.Метрики -->
+    <script>
+    // Отслеживание клика по фиксированной кнопке
+    document.querySelector('.fixed-cta')?.addEventListener('click', function() {
+        if (typeof ym !== 'undefined') {
+            ym(XXXXXXXX, 'reachGoal', 'fixed_cta_click');
+        }
+    });
+    
+    // Отслеживание скролла до FAQ (глубина 70%)
+    let faqGoalReached = false;
+    window.addEventListener('scroll', function() {
+        const faqSection = document.getElementById('faq');
+        if (faqSection && !faqGoalReached) {
+            const rect = faqSection.getBoundingClientRect();
+            if (rect.top < window.innerHeight * 0.3) {
+                faqGoalReached = true;
+                if (typeof ym !== 'undefined') {
+                    ym(XXXXXXXX, 'reachGoal', 'faq_view');
+                }
+            }
+        }
+    });
+    
+    // Отслеживание просмотра каталога
+    let catalogGoalReached = false;
+    window.addEventListener('scroll', function() {
+        const catalogSection = document.getElementById('catalog');
+        if (catalogSection && !catalogGoalReached) {
+            const rect = catalogSection.getBoundingClientRect();
+            if (rect.top < window.innerHeight * 0.5) {
+                catalogGoalReached = true;
+                if (typeof ym !== 'undefined') {
+                    ym(XXXXXXXX, 'reachGoal', 'catalog_view');
+                }
+            }
+        }
+    });
+    </script>
     
     <!-- Микроразметка Product для каталога -->
     <script type="application/ld+json">
