@@ -1,0 +1,265 @@
+================================================================================
+                    ИНСТРУКЦИЯ ПО НАСТРОЙКЕ САЙТА STI GROUP
+================================================================================
+
+1. ПОДКЛЮЧЕНИЕ ФОРМ К SUBMIT.PHP
+--------------------------------------------------------------------------------
+
+Все формы на сайте сейчас работают в демо-режиме. Для реальной отправки:
+
+1.1. Создайте файл submit.php в корне сайта со следующим содержимым:
+
+<?php
+// submit.php - Обработчик форм
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Получаем данные
+    $name = htmlspecialchars(trim($_POST['name'] ?? ''));
+    $phone = htmlspecialchars(trim($_POST['phone'] ?? ''));
+    $email = htmlspecialchars(trim($_POST['email'] ?? ''));
+    $comment = htmlspecialchars(trim($_POST['comment'] ?? ''));
+    $form_type = htmlspecialchars(trim($_POST['form_type'] ?? 'callback'));
+    
+    // Простая валидация
+    if (empty($name) || empty($phone)) {
+        http_response_code(400);
+        echo json_encode(['success' => false, 'message' => 'Заполните обязательные поля']);
+        exit;
+    }
+    
+    // Настройки почты
+    $to = 'info@stigroup.ru'; // Ваш email для заявок
+    $subject = "Заявка с сайта STI Group: $form_type";
+    
+    $message = "
+    <html>
+    <head><title>Новая заявка</title></head>
+    <body>
+        <h2>Данные заявки</h2>
+        <p><strong>Тип формы:</strong> $form_type</p>
+        <p><strong>Имя:</strong> $name</p>
+        <p><strong>Телефон:</strong> $phone</p>
+        <p><strong>Email:</strong> $email</p>
+        <p><strong>Комментарий:</strong> $comment</p>
+        <p><strong>Дата:</strong> " . date('d.m.Y H:i') . "</p>
+    </body>
+    </html>
+    ";
+    
+    $headers = "MIME-Version: 1.0" . "\r\n";
+    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+    $headers .= "From: STI Group <noreply@stigroup.ru>" . "\r\n";
+    
+    // Отправка письма
+    if (mail($to, $subject, $message, $headers)) {
+        echo json_encode(['success' => true]);
+    } else {
+        http_response_code(500);
+        echo json_encode(['success' => false, 'message' => 'Ошибка отправки']);
+    }
+} else {
+    http_response_code(403);
+    echo json_encode(['success' => false, 'message' => 'Forbidden']);
+}
+?>
+
+1.2. Измените обработчики форм в index.html:
+
+Найдите строку (примерно 1370):
+    function handleCalculatorSubmit(event) {
+        event.preventDefault();
+        const form = event.target;
+        form.classList.add('hidden');
+        document.getElementById('calculator-success').classList.remove('hidden');
+    }
+
+Замените на:
+    async function handleCalculatorSubmit(event) {
+        event.preventDefault();
+        const form = event.target;
+        const formData = new FormData(form);
+        formData.append('form_type', 'calculator');
+        
+        try {
+            const response = await fetch('/submit.php', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            
+            if (result.success) {
+                form.classList.add('hidden');
+                document.getElementById('calculator-success').classList.remove('hidden');
+                // Отправка цели в Яндекс.Метрику
+                if (typeof ym !== 'undefined') {
+                    ym(XXXXXXXX, 'reachGoal', 'calculator_submit');
+                }
+            } else {
+                alert('Ошибка: ' + result.message);
+            }
+        } catch (error) {
+            alert('Ошибка отправки. Попробуйте позже.');
+        }
+    }
+
+1.3. Для остальных форм (callback, product, solution) замените handleFormSubmit:
+
+Найдите строку (примерно 1380):
+    function handleFormSubmit(event, modalId) {
+        event.preventDefault();
+        const form = event.target;
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Отправка...';
+        submitBtn.disabled = true;
+        setTimeout(() => {
+            closeModal(modalId);
+            openModal('modal-success');
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+            form.reset();
+        }, 1000);
+    }
+
+Замените на:
+    async function handleFormSubmit(event, modalId) {
+        event.preventDefault();
+        const form = event.target;
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        
+        submitBtn.textContent = 'Отправка...';
+        submitBtn.disabled = true;
+        
+        const formData = new FormData(form);
+        formData.append('form_type', modalId.replace('modal-', ''));
+        
+        try {
+            const response = await fetch('/submit.php', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            
+            if (result.success) {
+                closeModal(modalId);
+                openModal('modal-success');
+                // Отправка цели в Яндекс.Метрику
+                if (typeof ym !== 'undefined') {
+                    ym(XXXXXXXX, 'reachGoal', 'form_submit');
+                }
+            } else {
+                alert('Ошибка: ' + result.message);
+            }
+        } catch (error) {
+            alert('Ошибка отправки. Попробуйте позже.');
+        } finally {
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+        }
+    }
+
+
+2. НАСТРОЙКА ЯНДЕКС.МЕТРИКИ
+--------------------------------------------------------------------------------
+
+2.1. Зарегистрируйте счётчик в Яндекс.Метрике:
+    - Откройте https://metrika.yandex.ru/
+    - Нажмите "Добавить счётчик"
+    - Заполните данные сайта (имя: STI Group, URL: https://akoffice933-maker.github.io/web-stigroup/)
+    - Получите номер счётчика (например, 12345678)
+
+2.2. Вставьте номер счётчика в index.html:
+
+Найдите строку (примерно 1420):
+    ym(XXXXXXXX, "init", {
+
+Замените XXXXXXXX на ваш номер:
+    ym(12345678, "init", {
+
+2.3. Настройте цели в Яндекс.Метрике:
+
+В интерфейсе Метрики перейдите в: Настройки → Цели → Добавить цель
+
+Цель 1: Отправка формы калькулятора
+    - Тип условия: JavaScript-событие
+    - Идентификатор цели: calculator_submit
+    - Название: Отправка калькулятора
+
+Цель 2: Отправка любой формы
+    - Тип условия: JavaScript-событие
+    - Идентификатор цели: form_submit
+    - Название: Заявка с формы
+
+Цель 3: Клик по фиксированной кнопке
+    - Тип условия: JavaScript-событие
+    - Идентификатор цели: fixed_cta_click
+    - Название: Клик по CTA кнопке
+
+Цель 4: Просмотр раздела FAQ
+    - Тип условия: Просмотр веб-страницы
+    - URL: содержит #faq
+    - Название: Просмотр FAQ
+
+2.4. Добавьте отслеживание клика по фиксированной кнопке:
+
+В index.html найдите кнопку (примерно строка 920):
+    <button class="fixed-cta ... " onclick="openModal('modal-calculator')" ...>
+
+Добавьте вызов метрики:
+    <button class="fixed-cta ... " onclick="if(typeof ym!=='undefined'){ym(12345678,'reachGoal','fixed_cta_click')}; openModal('modal-calculator')" ...>
+
+
+3. ДОПОЛНИТЕЛЬНЫЕ НАСТРОЙКИ
+--------------------------------------------------------------------------------
+
+3.1. Измените контактные данные в index.html:
+    - Телефон: +7 (862) 123-45-67 → ваш реальный
+    - Email: info@stigroup.ru → ваш реальный
+    - Адрес шоу-рума (если есть)
+
+3.2. Политика конфиденциальности:
+    Создайте файл privacy.html с текстом политики и обновите ссылку в футере.
+
+3.3. robots.txt:
+    Создайте файл robots.txt в корне:
+    
+    User-agent: *
+    Allow: /
+    Sitemap: https://akoffice933-maker.github.io/web-stigroup/sitemap.xml
+
+3.4. Favicon:
+    Добавьте иконку favicon.ico в корень и ссылку в <head>:
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+
+4. ПРОВЕРКА РАБОТОСПОСОБНОСТИ
+--------------------------------------------------------------------------------
+
+4.1. Проверьте отправку форм:
+    - Откройте сайт
+    - Заполните форму в калькуляторе
+    - Проверьте получение письма на email
+
+4.2. Проверьте Яндекс.Метрику:
+    - Откройте сайт
+    - Заполните форму
+    - В Метрике: Отчёты → Стандартные → Посещаемость
+    - Через 1-2 минуты должна появиться цель
+
+4.3. Проверьте мобильную версию:
+    - Откройте сайт с телефона
+    - Проверьте читаемость текста
+    - Проверьте работу меню-бургера
+
+
+================================================================================
+                         ТЕХПОДДЕРЖКА
+================================================================================
+
+При возникновении проблем:
+1. Проверьте консоль браузера (F12) на наличие ошибок
+2. Проверьте логи сервера для submit.php
+3. Убедитесь, что номер счётчика Метрики указан верно
+
+================================================================================
